@@ -1,0 +1,52 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+    <div class="jumbotron text-center">
+        <!--
+        <h1>About Me</h1>
+        <p class="lead">blablabla</p>
+        -->
+    </div>
+
+    <form action="" method="POST">
+        <div class="form-row">
+            <label for="stock_code" class="col-sm-2 col-form-label">Stock Code:</label>
+            <input type="text" name="stock_code" class="form-control col-sm-6" value={{request.form.stock_code}}>
+        </div>
+        <!-- "example2" loading effect-->
+        <button type="submit" class="btn btn-info example2">ADD STOCK</button>
+    </form>
+    <br>
+
+    <table class="table table-striped">
+        <tr>
+            <th>Code</th>
+            <th>First Record Date</th>
+            <th>Last Record Date</th>
+            <th></th>
+        </tr>
+        {% for stock_code, first_date, last_date in stock_info %}
+            <tr>
+                <td>{{stock_code}}</td>
+                <td>{{first_date}}</td>
+                <td>{{last_date}}</td>
+                <td>
+                    <div class="d-flex flex-row justify-content-around">
+                        <div class="flex-sm-column">
+                            <form action="{{url_for('view_page.predict', stock_code=stock_code)}}" method="POST">
+                                <button type="submit" class="btn btn-primary example2">PREDICT</button>
+                            </form>
+                        </div>
+                        <div class="flex-sm-column">
+                            <form action="{{url_for('view_page.remove')}}" method="POST">
+                                <input type='hidden', name='stock_code', value={{stock_code}}>
+                                <input type="hidden" name="_method" value="DELETE">
+                                <button type="submit" class="btn btn-danger example2">DELETE</button>
+                            </form>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
